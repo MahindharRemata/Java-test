@@ -83,17 +83,6 @@ pipeline {
             }
         }
 
-        stage('Deploy to Prod') {
-            when {
-                branch 'main'
-            }
-            steps {
-               input (
-                    message: 'Are we good for Prod Deployment ?'
-               )
-            }
-        }
-
         stage('Release to Prod') {
             when {
                 branch 'main'
