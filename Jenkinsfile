@@ -107,7 +107,7 @@ pipeline {
         }
 
         failure {
-            echo 'failed'
+            echo 'failedd'
         }
         aborted {
             echo 'aborted'
