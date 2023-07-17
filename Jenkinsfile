@@ -1,9 +1,9 @@
 pipeline {
-    agent { label 'master'}
+    agent { }
 
-    environment {
-        function_name = 'java-sample'
-    }
+    // environment {
+    //     function_name = 'java-sample'
+    // }
 
     stages {
 
@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build'
-                sh 'mvn package'
+                // sh 'mvn package'
             }
         }
 
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 echo 'Push'
 
-                sh "aws s3 cp target/sample-1.0.3.jar s3://bermtecbatch31"
+                // sh "aws s3 cp target/sample-1.0.3.jar s3://bermtecbatch31"
             }
         }
 
@@ -60,36 +60,42 @@ pipeline {
         // CD Started
 
         stage('Deployments') {
-            parallel {
-
-                stage('Deploy to Dev') {
-                    steps {
-                        echo 'Build'
-
-                        sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
-                    }
-                }
-
-                stage('Deploy to test ') {
-                    when {
-                        branch 'main'
-                    }
-                    steps {
-                        echo 'Build'
-
-                        // sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
-                    }
-                }
+            steps {
+                echo 'Deployments'
             }
+            // parallel {
+
+            //     stage('Deploy to Dev') {
+            //         steps {
+            //             echo 'Build'
+
+            //             sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
+            //         }
+            //     }
+
+            //     stage('Deploy to test ') {
+            //         when {
+            //             branch 'main'
+            //         }
+            //         steps {
+            //             echo 'Build'
+
+            //             // sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
+            //         }
+            //     }
+            //
         }
 
         stage('Release to Prod') {
-            when {
-                branch 'main'
-            }
             steps {
-                sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
+                echo 'Prod'
             }
+            // when {
+            //     branch 'main'
+            // }
+            // steps {
+            //     sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
+            // }
         }
 
 
@@ -107,7 +113,7 @@ pipeline {
         }
 
         failure {
-            echo 'failedd'
+            echo 'failed'
         }
         aborted {
             echo 'aborted'
