@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    // environment {
-    //     function_name = 'java-sample'
-    // }
+    environment {
+        function_name = 'javabasic'
+    }
 
     stages {
 
@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build'
-                // sh 'mvn package'
+                sh 'mvn package'
             }
         }
 
@@ -50,8 +50,7 @@ pipeline {
         stage('Push') {
             steps {
                 echo 'Push'
-
-                // sh "aws s3 cp target/sample-1.0.3.jar s3://bermtecbatch31"
+                sh "aws s3 cp target/sample-1.0.3.jar s3://basicpipeline"
             }
         }
 
@@ -63,39 +62,39 @@ pipeline {
             steps {
                 echo 'Deployments'
             }
-            // parallel {
+            parallel {
 
-            //     stage('Deploy to Dev') {
-            //         steps {
-            //             echo 'Build'
+                stage('Deploy to Dev') {
+                    steps {
+                        echo 'Build'
 
-            //             sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
-            //         }
-            //     }
+                        sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket basicpipeline --s3-key sample-1.0.3.jar"
+                    }
+                }
 
-            //     stage('Deploy to test ') {
-            //         when {
-            //             branch 'main'
-            //         }
-            //         steps {
-            //             echo 'Build'
+                stage('Deploy to test ') {
+                    when {
+                        branch 'main'
+                    }
+                    steps {
+                        echo 'Build'
 
-            //             // sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
-            //         }
-            //     }
-            //
+                        sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket basicpipeline --s3-key sample-1.0.3.jar"
+                    }
+                }
+            
         }
 
         stage('Release to Prod') {
             steps {
                 echo 'Prod'
             }
-            // when {
-            //     branch 'main'
-            // }
-            // steps {
-            //     sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket bermtecbatch31 --s3-key sample-1.0.3.jar"
-            // }
+            when {
+                branch 'main'
+            }
+            steps {
+                sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket basicpipeline --s3-key sample-1.0.3.jar"
+            }
         }
 
 
