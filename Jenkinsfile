@@ -84,9 +84,6 @@ pipeline {
         }    
 
         stage('Release to Prod') {
-            steps {
-                echo 'Prod'
-            }
             when {
                 branch 'main'
             }
