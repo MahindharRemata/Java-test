@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        function_name = 'javabasicpipe'
+        function_name = 'javabasic'
     }
 
     stages {
