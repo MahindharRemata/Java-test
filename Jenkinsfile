@@ -88,7 +88,6 @@ pipeline {
     }           
 
         // CD Ended
-    }
 
     post {
         always {
