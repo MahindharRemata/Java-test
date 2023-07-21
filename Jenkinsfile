@@ -60,8 +60,6 @@ pipeline {
         // CD Started
 
         stage('Deployments') {
-            parallel {
-
                 stage('Deploy to Dev') {
                     steps {
                         echo 'Build'
@@ -80,7 +78,6 @@ pipeline {
                         sh "aws lambda update-function-code --function-name $function_name --region us-east-1 --s3-bucket basicpipeline1 --s3-key sample-1.0.3.jar"
                     }
                 }
-            }
         }    
 
         stage('Release to Prod') {
